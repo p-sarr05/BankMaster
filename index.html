@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BankMaster – Système Bancaire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">B</div>
+    <div class="brand-text">
+      <span class="brand-name">BankMaster</span>
+      <span class="brand-tagline">Votre banque digitale</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a href="#" class="nav-item active" data-page="accueil">
+      <svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg>
+      Accueil
+    </a>
+    <a href="#" class="nav-item" data-page="clients">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Clients
+    </a>
+    <a href="#" class="nav-item" data-page="comptes">
+      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
+      Comptes
+    </a>
+    <div class="nav-section-label">Opérations</div>
+    <a href="#" class="nav-item" data-page="operations">
+      <svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+      Transactions
+    </a>
+    <a href="#" class="nav-item" data-page="prets">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 0v10l6 3"/></svg>
+      Prêts
+    </a>
+    <a href="#" class="nav-item" data-page="dashboard">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+      Tableau de bord
+    </a>
+    <div class="nav-section-label">Données</div>
+    <a href="#" class="nav-item" data-page="export">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Export
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="btn-reset" onclick="resetAll()">Réinitialiser les données</button>
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main class="main-content">
+  <header class="topbar">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-title" id="topbarTitle">Accueil</div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="topbarDate"></div>
+    </div>
+  </header>
+
+  <!-- ── PAGE: ACCUEIL ── -->
+  <section class="page active" id="page-accueil">
+    <div class="page-hero">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Bienvenue sur</p>
+        <h1 class="hero-title">BankMaster <span>JS</span></h1>
+        <p class="hero-desc">Gérez vos clients, comptes, opérations et prêts avec une solution 100% JavaScript locale, sécurisée et intuitive.</p>
+        <div class="hero-stats" id="heroStats">
+          <div class="stat-card"><span class="stat-num" id="statClients">0</span><span class="stat-label">Clients</span></div>
+          <div class="stat-card"><span class="stat-num" id="statComptes">0</span><span class="stat-label">Comptes</span></div>
+          <div class="stat-card"><span class="stat-num" id="statOps">0</span><span class="stat-label">Transactions</span></div>
+          <div class="stat-card"><span class="stat-num" id="statPrets">0</span><span class="stat-label">Prêts</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="bank-card">
+          <div class="card-chip"></div>
+          <div class="card-number">•••• •••• •••• 2025</div>
+          <div class="card-bottom">
+            <span>BankMaster</span>
+            <span class="card-logo">BM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table de comparaison -->
+    <div class="section-title-wrap">
+      <h2 class="section-title">Types de comptes disponibles</h2>
+      <p class="section-sub">Choisissez le compte adapté à votre profil</p>
+    </div>
+    <div class="table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Type de compte</th>
+            <th>Dépôts</th>
+            <th>Retraits</th>
+            <th>Prêt</th>
+            <th>Apport requis</th>
+            <th>Conditions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="account-badge current">Courant</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check no">✘</span></td>
+            <td>Salarié (CDI / CDD)</td>
+          </tr>
+          <tr>
+            <td><span class="account-badge savings">Épargne libre</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check no">✘</span></td>
+            <td><span class="check no">✘</span></td>
+            <td>Particulier</td>
+          </tr>
+          <tr>
+            <td><span class="account-badge blocked">Épargne bloquée</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check no">✘ <small>(date définie)</small></span></td>
+            <td><span class="check no">✘</span></td>
+            <td><span class="check no">✘</span></td>
+            <td>Particulier</td>
+          </tr>
+          <tr>
+            <td><span class="account-badge business">Société</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check yes">✔</span></td>
+            <td><span class="check yes">✔ <small>200 000 F</small></span></td>
+            <td>RC ou NINEA</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── PAGE: CLIENTS ── -->
+  <section class="page" id="page-clients">
+    <div class="page-header">
+      <div>
+        <h2 class="page-h2">Gestion des Clients</h2>
+        <p class="page-sub">Enregistrer et gérer les profils clients</p>
+      </div>
+      <button class="btn-primary" onclick="openModal('modalClient')">+ Nouveau client</button>
+    </div>
+    <div class="cards-grid" id="clientsList"></div>
+  </section>
+
+  <!-- ── PAGE: COMPTES ── -->
+  <section class="page" id="page-comptes">
+    <div class="page-header">
+      <div>
+        <h2 class="page-h2">Comptes Bancaires</h2>
+        <p class="page-sub">Ouvrir et gérer les comptes par client</p>
+      </div>
+      <button class="btn-primary" onclick="openModal('modalCompte')">+ Ouvrir un compte</button>
+    </div>
+    <div class="filter-bar">
+      <label>Filtrer par client :</label>
+      <select id="filterClientCompte" onchange="renderComptes()">
+        <option value="">Tous les clients</option>
+      </select>
+    </div>
+    <div class="cards-grid" id="comptesList"></div>
+  </section>
+
+  <!-- ── PAGE: OPÉRATIONS ── -->
+  <section class="page" id="page-operations">
+    <div class="page-header">
+      <div>
+        <h2 class="page-h2">Transactions</h2>
+        <p class="page-sub">Dépôts, retraits et historique</p>
+      </div>
+    </div>
+    <div class="ops-layout">
+      <div class="ops-form-panel">
+        <div class="form-card">
+          <h3>Nouvelle opération</h3>
+          <div class="form-group">
+            <label>Client</label>
+            <select id="opClient" onchange="loadOpComptes()">
+              <option value="">Sélectionner un client</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Compte</label>
+            <select id="opCompte"></select>
+          </div>
+          <div class="form-group">
+            <label>Type d'opération</label>
+            <div class="radio-group">
+              <label class="radio-btn">
+                <input type="radio" name="opType" value="depot" checked/> Dépôt
+              </label>
+              <label class="radio-btn">
+                <input type="radio" name="opType" value="retrait"/> Retrait
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Montant (FCFA)</label>
+            <input type="number" id="opMontant" placeholder="0" min="1"/>
+          </div>
+          <div class="form-group">
+            <label>Description (optionnel)</label>
+            <input type="text" id="opDesc" placeholder="ex: Loyer, Salaire..."/>
+          </div>
+          <button class="btn-primary full-width" onclick="effectuerOperation()">Valider l'opération</button>
+        </div>
+      </div>
+      <div class="ops-history-panel">
+        <div class="filter-bar">
+          <label>Filtrer par compte :</label>
+          <select id="filterOpCompte" onchange="renderHistorique()">
+            <option value="">Tous les comptes</option>
+          </select>
+        </div>
+        <div id="historiqueOps"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: PRÊTS ── -->
+  <section class="page" id="page-prets">
+    <div class="page-header">
+      <div>
+        <h2 class="page-h2">Simulation de Prêt</h2>
+        <p class="page-sub">Calculez et validez les prêts bancaires</p>
+      </div>
+    </div>
+    <div class="pret-layout">
+      <div class="form-card pret-form">
+        <h3>Paramètres du prêt</h3>
+        <div class="form-group">
+          <label>Client</label>
+          <select id="pretClient" onchange="onPretClientChange()">
+            <option value="">Sélectionner un client</option>
+          </select>
+        </div>
+        <div class="form-group" id="pretCompteGroup">
+          <label>Compte associé</label>
+          <select id="pretCompte"></select>
+        </div>
+        <div class="form-group">
+          <label>Montant du prêt (FCFA)</label>
+          <input type="number" id="pretMontant" placeholder="0" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Durée (mois)</label>
+          <input type="number" id="pretDuree" placeholder="12" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Taux annuel (%)</label>
+          <input type="number" id="pretTaux" placeholder="5.5" step="0.1"/>
+        </div>
+        <div class="form-group">
+          <label>Type de prêt</label>
+          <select id="pretType">
+            <option value="long">Long terme (Salarié CDI)</option>
+            <option value="court">Court terme (Particulier / Entreprise)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="pretAssurance"/>
+            <span>Inclure assurance (0.3%/an)</span>
+          </label>
+        </div>
+        <button class="btn-primary full-width" onclick="simulerPret()">Simuler le prêt</button>
+      </div>
+      <div class="pret-result" id="pretResult" style="display:none">
+        <div class="result-header">
+          <h3>Résultat de la simulation</h3>
+          <div class="admissibility-badge" id="admissibilityBadge"></div>
+        </div>
+        <div class="result-grid" id="resultGrid"></div>
+        <div class="result-note" id="resultNote"></div>
+        <button class="btn-primary" id="btnValiderPret" onclick="validerPret()" style="display:none">Valider et enregistrer le prêt</button>
+      </div>
+    </div>
+
+    <div class="section-title-wrap" style="margin-top:3rem">
+      <h2 class="section-title">Prêts enregistrés</h2>
+    </div>
+    <div id="pretsList"></div>
+  </section>
+
+  <!-- ── PAGE: DASHBOARD ── -->
+  <section class="page" id="page-dashboard">
+    <div class="page-header">
+      <div>
+        <h2 class="page-h2">Tableau de Bord</h2>
+        <p class="page-sub">Visualisation et analyse des données</p>
+      </div>
+      <select id="dashboardClient" onchange="renderDashboard()">
+        <option value="">Sélectionner un client</option>
+      </select>
+    </div>
+    <div id="dashboardContent">
+      <div class="empty-state">
+        <div class="empty-icon">📊</div>
+        <p>Sélectionnez un client pour afficher son tableau de bord</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: EXPORT ── -->
+  <section class="page" id="page-export">
+    <div class="page-header">
+      <div>
+        <h2 class="page-h2">Export des données</h2>
+        <p class="page-sub">Télécharger les données en CSV ou TXT</p>
+      </div>
+    </div>
+    <div class="export-grid">
+      <div class="export-card">
+        <div class="export-icon">👥</div>
+        <h3>Liste des clients</h3>
+        <p>Exportez tous les profils clients enregistrés</p>
+        <div class="export-btns">
+          <button class="btn-outline" onclick="exportData('clients','csv')">CSV</button>
+          <button class="btn-outline" onclick="exportData('clients','txt')">TXT</button>
+        </div>
+      </div>
+      <div class="export-card">
+        <div class="export-icon">💳</div>
+        <h3>Historique des opérations</h3>
+        <p>Toutes les transactions effectuées</p>
+        <div class="export-btns">
+          <button class="btn-outline" onclick="exportData('operations','csv')">CSV</button>
+          <button class="btn-outline" onclick="exportData('operations','txt')">TXT</button>
+        </div>
+      </div>
+      <div class="export-card">
+        <div class="export-icon">🏦</div>
+        <h3>Prêts en cours</h3>
+        <p>Tous les prêts validés et leurs détails</p>
+        <div class="export-btns">
+          <button class="btn-outline" onclick="exportData('prets','csv')">CSV</button>
+          <button class="btn-outline" onclick="exportData('prets','txt')">TXT</button>
+        </div>
+      </div>
+      <div class="export-card">
+        <div class="export-icon">🏦</div>
+        <h3>Tous les comptes</h3>
+        <p>Données de tous les comptes ouverts</p>
+        <div class="export-btns">
+          <button class="btn-outline" onclick="exportData('comptes','csv')">CSV</button>
+          <button class="btn-outline" onclick="exportData('comptes','txt')">TXT</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ══════════════════ MODALS ══════════════════ -->
+
+<!-- Modal: Nouveau Client -->
+<div class="modal-overlay" id="modalClient">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Nouveau Client</h3>
+      <button class="modal-close" onclick="closeModal('modalClient')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" id="cNom" placeholder="Diallo"/>
+        </div>
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" id="cPrenom" placeholder="Moussa"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Âge</label>
+          <input type="number" id="cAge" placeholder="30" min="18" max="90"/>
+        </div>
+        <div class="form-group">
+          <label>Type de client</label>
+          <select id="cType" onchange="toggleClientFields()">
+            <option value="Particulier">Particulier</option>
+            <option value="Salarié">Salarié</option>
+            <option value="Entreprise">Entreprise</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Salaire / Revenu mensuel (FCFA)</label>
+        <input type="number" id="cSalaire" placeholder="500000"/>
+      </div>
+      <div id="salaryFields">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Type de contrat</label>
+            <select id="cContrat" onchange="toggleCDDDuration()">
+              <option value="CDI">CDI</option>
+              <option value="CDD">CDD</option>
+            </select>
+          </div>
+          <div class="form-group" id="cDureeGroup" style="display:none">
+            <label>Durée du contrat (mois)</label>
+            <input type="number" id="cDureeContrat" placeholder="12" min="1"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal('modalClient')">Annuler</button>
+      <button class="btn-primary" onclick="enregistrerClient()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nouveau Compte -->
+<div class="modal-overlay" id="modalCompte">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Ouvrir un Compte</h3>
+      <button class="modal-close" onclick="closeModal('modalCompte')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Client</label>
+        <select id="compteClient" onchange="updateCompteTypes()">
+          <option value="">Sélectionner un client</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Type de compte</label>
+        <select id="compteType" onchange="toggleCompteFields()">
+          <option value="">-- Choisir --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Solde initial (FCFA)</label>
+        <input type="number" id="compteSolde" placeholder="0" min="0"/>
+      </div>
+      <div class="form-group" id="dateDeblocageGroup" style="display:none">
+        <label>Date de déblocage</label>
+        <input type="date" id="compteDateDeblocage"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal('modalCompte')">Annuler</button>
+      <button class="btn-primary" onclick="ouvrirCompte()">Ouvrir le compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="storage.js"></script>
+<script src="clients.js"></script>
+<script src="comptes.js"></script>
+<script src="operations.js"></script>
+<script src="prets.js"></script>
+<script src="dashboard.js"></script>
+<script src="export.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
